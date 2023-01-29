@@ -8,6 +8,4 @@ async function get(path) {
   }
 }
 
-export {
-  get
-};
+export { get };

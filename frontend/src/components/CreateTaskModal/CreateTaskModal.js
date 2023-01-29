@@ -9,27 +9,17 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
-import axios from "axios";
+
 import { useState } from "react";
 const CreateTaskModal = ({
   createTaskModal,
   setCreateTaskModal,
   toggleShow,
+  handleSaveTask,
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const handleSaveTask = async() => {
 
-    try{
-        const response = await axios.post("/create-task", {name, description})
-        console.log(response)
-    }
-    catch(e){
-        console.log(e)
-        alert(e)
-    }
-
-  }
 
   return (
     <MDBModal show={createTaskModal} setShow={setCreateTaskModal} tabIndex="-1">
@@ -65,7 +55,7 @@ const CreateTaskModal = ({
             <MDBBtn color="secondary" onClick={toggleShow}>
               Close
             </MDBBtn>
-            <MDBBtn onClick={handleSaveTask}>Save task</MDBBtn>
+            <MDBBtn onClick={() => handleSaveTask(name, description)}>Save task</MDBBtn>
           </MDBModalFooter>
         </MDBModalContent>
       </MDBModalDialog>

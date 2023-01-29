@@ -47,8 +47,7 @@ router.put(
     .withMessage("Description must be a string")
     .isLength({ min: 1 })
     .withMessage("Name must be at least 1 character long"),
-  body("status")
-  .optional(),
+  body("status").optional(),
   updateTask
 );
 export default router;

@@ -1,6 +1,5 @@
-
 export enum taskStatus {
-    buffer = "buffer",
-    working = "working",
-    done = "done"
+  buffer = "buffer",
+  working = "working",
+  done = "done",
 }

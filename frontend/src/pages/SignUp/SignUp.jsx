@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import validators from "../../utils/validators";
+import { useHistory } from "react-router-dom";
+
 import {
   MDBContainer,
   MDBCard,
@@ -17,20 +18,21 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const validateEmail = (value) => {
-    // validators.validateEmail()
-  };
+  const history = useHistory();
 
   const handleSignUp = async () => {
-    try{
-      const response = await axios.post("/create-user", {first_name: name, email, password})
-      console.log(response)
+    try {
+      await axios.post("/create-user", {
+        first_name: name,
+        email,
+        password,
+      });
+
+      history.push("/login");
+    } catch (e) {
+      alert(`Error while creating user ${JSON.stringify(e.response.data)}`);
     }
-    catch(e){
-      console.log(e)
-    }
-  }
+  };
 
   return (
     <MDBContainer fluid className="bg-dark">
@@ -84,10 +86,11 @@ const SignUp = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     size="lg"
                     id="form3"
-                    
                     type="password"
                   />
-                  <MDBBtn onClick={handleSignUp} className="mb-4">Sign in</MDBBtn>
+                  <MDBBtn onClick={handleSignUp} className="mb-4">
+                    Sign in
+                  </MDBBtn>
                   <p>
                     <a href="/">Already have an account</a>
                   </p>

@@ -1,26 +1,40 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { setEmail } from "../../redux/slices/account";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
-const NavBar = () => {
+// import { useHistory } from "react-router-dom";
+import axios from "axios";
+const NavBar = ({fetchTasks}) => {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.email);
   const handleLogOut = () => {
     dispatch(setEmail(null));
   };
-
+  // const history = useHistory();
+  const handleSaveTask = async (name, description) => {
+    try {
+      await axios.post("/create-task", { name, description });
+      toggleShow();
+      await fetchTasks();
+      console.log("aaaa")
+      // history.push("/")
+    } catch (e) {
+      console.log(e);
+      alert(e);
+    }
+  };
   const handleAddTask = () => {
-    console.log("handleAddTask");
-    console.log("email", email);
     toggleShow();
   };
 
   const [createTaskModal, setCreateTaskModal] = useState(false);
-  const toggleShow = () => setCreateTaskModal(!createTaskModal);
+  const toggleShow = () => {
+    setCreateTaskModal(!createTaskModal)
+  };
 
   return (
     <>
@@ -44,7 +58,12 @@ const NavBar = () => {
           )}
         </Toolbar>
       </AppBar>
-      <CreateTaskModal toggleShow={toggleShow} createTaskModal={createTaskModal} setCreateTaskModal={setCreateTaskModal}/>
+      <CreateTaskModal
+        toggleShow={toggleShow}
+        createTaskModal={createTaskModal}
+        setCreateTaskModal={setCreateTaskModal}
+        handleSaveTask={handleSaveTask}
+      />
     </>
   );
 };

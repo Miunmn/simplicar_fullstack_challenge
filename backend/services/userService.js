@@ -3,11 +3,10 @@ import mongoose from "mongoose";
 
 // login
 async function getUser(email, password) {
-  return new Promise(function (resolve, reject){
-    console.log("email", email)
-    const query = User.findOne({email: email, password: password});
-    query.exec(function(err, user){
-      if(err){
+  return new Promise(function (resolve, reject) {
+    const query = User.findOne({ email: email, password: password });
+    query.exec(function (err, user) {
+      if (err) {
         const error = new Error("Error while fetching user using email");
         error.status = 500;
         return reject(error);
@@ -16,7 +15,6 @@ async function getUser(email, password) {
     });
   });
 }
-
 
 async function getUsers() {
   return new Promise(function (resolve, reject) {
@@ -33,10 +31,19 @@ async function getUsers() {
 }
 // signUp
 async function createUser(newUserData) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(async function (resolve, reject) {
+
+    const checIfUserExists = await User.findOne({email: newUserData.email})
+    
+    if (checIfUserExists) {
+      const error = new Error("User already exists with that email");
+      error.status = 400;
+      return reject(error);
+    }
+
     User.create(newUserData, function (err, usr) {
       if (err) {
-        console.log(err)
+        console.log(err);
         const error = new Error("Error while creating user");
         error.status = 500;
         return reject(error);
@@ -119,5 +126,5 @@ export default {
   createUser,
   deconsteUser,
   updateUser,
-  getUser
+  getUser,
 };

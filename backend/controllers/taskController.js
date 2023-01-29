@@ -17,7 +17,7 @@ async function createTask(req, res, next) {
     locations: ["body"],
     includeOptionals: true,
   });
-  
+
   const errors = validationResult(req);
   if (!errors.isEmpty())
     return res
@@ -32,25 +32,28 @@ async function createTask(req, res, next) {
     res.status(err.status).json({ message: err.message });
   }
 }
-async function updateTask(req, res, next){
-  const body = matchedData(req, { locations: ['body'], includeOptionals: true });
+async function updateTask(req, res, next) {
+  const body = matchedData(req, {
+    locations: ["body"],
+    includeOptionals: true,
+  });
 
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
   const id = req?.query?.id;
-  if (!id) res.status(400).json({errors: "Task id cannot be null"})
+  if (!id) res.status(400).json({ errors: "Task id cannot be null" });
 
-  try{
+  try {
     const result = await taskService.updateTask(id, body);
     res.json(result);
-  }
-
-  catch(err){
-    console.log('err', err);
+  } catch (err) {
+    console.log("err", err);
     res.status(err.status).json({ message: err.message });
   }
 }

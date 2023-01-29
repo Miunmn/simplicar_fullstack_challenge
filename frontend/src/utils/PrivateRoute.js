@@ -1,20 +1,20 @@
-import {   Redirect  } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = (props) => {
-    const { component: Component, path, componentProps, ...rest } = props;
-    
-    // const user_id = useSelector(state => state.account.selectedAccount);
-    const email = useSelector(state => state.email)
-    console.log('email', email)
+  const { component: Component, componentProps } = props;
+  const email = useSelector((state) => state.email);
 
-    if (!email) return <Redirect
+  if (!email)
+    return (
+      <Redirect
         to={{
-            pathname: "/login",
+          pathname: "/login",
         }}
-    />
+      />
+    );
 
-    return <Component {...props} {...componentProps} />
+  return <Component {...props} {...componentProps} />;
 };
 
 export default PrivateRoute;

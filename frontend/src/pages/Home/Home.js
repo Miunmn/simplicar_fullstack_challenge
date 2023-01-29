@@ -1,37 +1,25 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-const Home = () => {
-  const [tasks, setTasks] = useState({});
 
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get("/get-tasks");
-      setTasks(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  useEffect(async () => {
-    await fetchTasks()
-  }, []);
-
-  const handleDragEnd = async({ destination, source }) => {
+const Home = ({ tasks, fetchTasks }) => {
+  const handleDragEnd = async ({ destination, source }) => {
     if (!destination) return;
     if (
       destination.index === source.index &&
       destination.droppableId === source.droppableId
-    )return;
+    )
+      return;
     const taskGroup = tasks[source.droppableId].items;
     const task = taskGroup[source.index];
     const id = task.id;
-    try{
-      await axios.put(`/update-task?id=${id}`, { status: destination.droppableId})
-      await fetchTasks()
-    }
-    catch(e){
-      console.log(e)
+
+    try {
+      await axios.put(`/update-task?id=${id}`, {
+        status: destination.droppableId,
+      });
+      await fetchTasks();
+    } catch (e) {
+      console.log(e);
     }
   };
   return (

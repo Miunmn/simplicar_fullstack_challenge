@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setEmail } from "../../redux/slices/account";
 
-
 const Login = () => {
   const [email, setEmailVal] = useState("");
   const [password, setPassword] = useState("");
